@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <div class="login-container">
+        <h2>Вход для администратора</h2>
+        <form method="post" action="/login">
+            <input type="password" name="password" placeholder="Пароль" required />
+            <button type="submit">Войти</button>
+        </form>
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+services:
+
+  bot:
+    build: .
+    container_name: vpn_bot
+    depends_on:
+      - db
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    restart: always
+
+  admin:
+    build:
+      context: .
+      dockerfile: admin/Dockerfile
+    container_name: vpn_admin
+    depends_on:
+      - db
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    # Убираем working_dir, поскольку уже зашито в Dockerfile
+    ports:
+      - "8022:8000"
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -h db -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  db:
+    image: postgres:15
+    container_name: vpn_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: users_db
+    # Если не нужен внешний доступ к БД, можно убрать ports
+    ports:
+      - "5433:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  db_data:
