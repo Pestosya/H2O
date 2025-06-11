@@ -54,14 +54,6 @@ async def main():
     dp.include_router(back_router)
 
     # Глобальная обработка pre_checkout_query (если не сработает в payment_router)
-    @dp.pre_checkout_query()
-    async def process_pre_checkout(pre_checkout_q: PreCheckoutQuery):
-        await pre_checkout_q.answer(ok=True)
-
-    @dp.message(lambda m: m.successful_payment is not None)
-    async def process_successful_payment(message: Message):
-        await payment_router.call_action("handle_successful_payment", message=message)
-
 
     await on_startup(bot, dp)
     try:
