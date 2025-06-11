@@ -74,7 +74,7 @@ async def send_invoice(callback: types.CallbackQuery, payload: str):
     hours = params["hours"]
     months = int(option_key.split("_")[-1])
 
-    title = f"VPN: подписка на {months} мес."
+    title = f"Подписка на {months} мес."
     description = f"Платный конфиг: {months} мес. ({hours} ч.), {price_rub} ₽"
     amount = price_rub * 100
     prices = [LabeledPrice(label=title, amount=amount)]
