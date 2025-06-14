@@ -12,8 +12,8 @@ from core.database import (
     add_username,
     has_used_trial,
     set_trial_used,
-    save_config_id,
-    set_expiration_time,
+    save_trial_config_id,
+    set_trial_expiration_time,
     get_user
 )
 
@@ -85,7 +85,7 @@ async def handle_trial_callback(callback: types.CallbackQuery):
         trial_config_id = config_entry["id"]
 
         # 5. Сохраняем config_id в БД
-        await save_config_id(tg_id, trial_config_id)
+        await save_trial_config_id(tg_id, trial_config_id)
 
         # 6. Запрашиваем файл конфигурации и отсылаем его
         file_resp = api_session.request(
@@ -108,7 +108,7 @@ async def handle_trial_callback(callback: types.CallbackQuery):
 
         # 7. Устанавливаем время окончания и помечаем пробный как использованный
         expiration_time = datetime.utcnow() + timedelta(hours=24)
-        await set_expiration_time(tg_id, expiration_time)
+        await set_trial_expiration_time(tg_id, expiration_time)
         await set_trial_used(tg_id, used=True)
 
         # 8. Редактируем предыдущее сообщение: возвращаем главное меню
